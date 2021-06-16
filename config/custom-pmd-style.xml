@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Custom ruleset">
+    <description>Customized PMD Ruleset for module project</description>
+
+    <rule ref="category/java/bestpractices.xml/UnusedImports"/>
+    <rule ref="category/java/codestyle.xml/DuplicateImports"/>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>
+
+</ruleset>

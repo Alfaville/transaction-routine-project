@@ -1,0 +1,8 @@
+spring:
+  h2.console:
+    enabled: false
+  datasource:
+    url: jdbc:postgresql://postgres:5432/startwars
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver

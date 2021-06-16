@@ -1,0 +1,13 @@
+server:
+  servlet.context-path: /transaction-routine
+  port: 9000
+
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+  application:
+    name: starwars-test
+  jpa:
+    show-sql: false
+    properties.hibernate.format_sql: false
