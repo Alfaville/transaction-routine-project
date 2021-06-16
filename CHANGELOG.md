@@ -9,3 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Mapping account and transaction entity;
  - Integration test added with H2;
  - SQL script creation with Flyway
+ - PMD added in the project;
