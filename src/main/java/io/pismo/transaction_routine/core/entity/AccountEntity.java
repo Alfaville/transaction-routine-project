@@ -22,8 +22,8 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "document_number", nullable = false)
-    private Long documentNumber;
+    @Column(name = "document_number", nullable = false, unique = true)
+    private String documentNumber;
 
     @OneToMany(mappedBy = "accountEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<TransactionEntity> transactionEntity;

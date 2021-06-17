@@ -35,7 +35,7 @@ public class DatabaseIntegrationTest {
     @Order(1)
     void persistAccountWithSuccess() {
         AccountEntity account = new AccountEntity();
-        account.setDocumentNumber(12345678900L);
+        account.setDocumentNumber("12345678900");
 
         final AccountEntity newAccount = accountRepository.save(account);
 
