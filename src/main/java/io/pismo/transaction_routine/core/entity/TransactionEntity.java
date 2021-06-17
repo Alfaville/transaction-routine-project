@@ -9,6 +9,7 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public class TransactionEntity {
     private LocalDateTime eventDate;
 
     @JoinColumn(name = "operation_type_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private OperationTypeEntity operationTypeEntity;
 
     @JoinColumn(name = "account_id", nullable = false)
