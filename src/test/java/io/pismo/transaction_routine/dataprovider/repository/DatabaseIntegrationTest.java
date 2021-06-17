@@ -25,17 +25,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DatabaseIntegrationTest {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private transient AccountRepository accountRepository;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private transient TransactionRepository transactionRepository;
     @Autowired
-    private OperationTypeRepository operationTypeRepository;
+    private transient OperationTypeRepository operationTypeRepository;
 
     @Test
     @Order(1)
     void persistAccountWithSuccess() {
         AccountEntity account = new AccountEntity();
-        account.setDocumentNumber(12345678900L);
+        account.setDocumentNumber("12345678900");
 
         final AccountEntity newAccount = accountRepository.save(account);
 
@@ -45,10 +45,8 @@ public class DatabaseIntegrationTest {
     @Test
     @Order(2)
     void persistAccountWithoutDocumentNumberAndReturnError() {
-        final AccountEntity account = new AccountEntity();
-
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () ->
-                accountRepository.save(account)
+                accountRepository.save(new AccountEntity())
         );
         assertNotNull(exception.getMessage());
     }
@@ -81,17 +79,16 @@ public class DatabaseIntegrationTest {
     @Test
     @Order(5)
     void persistTransactionWithoutOperationTypeAndReturnError() {
-        final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(TransactionEnum.COMPRA_A_VISTA.getIdentity());
-
-        DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () ->
-                transactionRepository.save(
-                        TransactionEntity.builder()
-                                .accountEntity(null)
-                                .amount(new BigDecimal(63.5))
-                                .operationTypeEntity(operationTypeOp.get())
-                                .build()
-                )
-        );
+        DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
+            final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(TransactionEnum.COMPRA_A_VISTA.getIdentity());
+            transactionRepository.save(
+                    TransactionEntity.builder()
+                            .accountEntity(null)
+                            .amount(new BigDecimal("63.5"))
+                            .operationTypeEntity(operationTypeOp.get())
+                            .build()
+            );
+        });
         assertNotNull(exception.getMessage());
     }
 

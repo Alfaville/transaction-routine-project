@@ -9,3 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Mapping account and transaction entity;
  - Integration test added with H2;
  - SQL script creation with Flyway
+ - PMD added in the project;
+ - GithubActions workflow added in the project;
+ - Account API: creation and search feature. Creation of unit and integration test;

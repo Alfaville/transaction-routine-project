@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public class ApiResponse implements ResponseBase {
+public class ApiResponse {
     private final HttpStatus status;
     private final String message;
 }
