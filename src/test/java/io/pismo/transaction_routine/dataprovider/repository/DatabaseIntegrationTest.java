@@ -3,7 +3,6 @@ package io.pismo.transaction_routine.dataprovider.repository;
 import io.pismo.transaction_routine.core.entity.AccountEntity;
 import io.pismo.transaction_routine.core.entity.OperationTypeEntity;
 import io.pismo.transaction_routine.core.entity.TransactionEntity;
-import io.pismo.transaction_routine.core.entity.TransactionEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -62,7 +61,8 @@ public class DatabaseIntegrationTest {
     @Test
     @Order(4)
     void persistTransactionWithSuccess() {
-        final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(TransactionEnum.COMPRA_A_VISTA.getIdentity());
+        final Long compraAVista = 1L;
+        final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(compraAVista);
         final Optional<AccountEntity> accountOp = accountRepository.findById(1L);
 
         final TransactionEntity transaction = transactionRepository.save(
@@ -79,8 +79,9 @@ public class DatabaseIntegrationTest {
     @Test
     @Order(5)
     void persistTransactionWithoutOperationTypeAndReturnError() {
+        final Long compraAVista = 1L;
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
-            final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(TransactionEnum.COMPRA_A_VISTA.getIdentity());
+            final Optional<OperationTypeEntity> operationTypeOp = operationTypeRepository.findById(compraAVista);
             transactionRepository.save(
                     TransactionEntity.builder()
                             .accountEntity(null)
@@ -92,4 +93,14 @@ public class DatabaseIntegrationTest {
         assertNotNull(exception.getMessage());
     }
 
+    @Test
+    @Order(6)
+    void tryPersistAccountWithSameDocumentNumberAndReturnError() {
+        DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
+            var account = new AccountEntity();
+            account.setDocumentNumber("12345678900");
+            accountRepository.save(account);
+        });
+        assertNotNull(exception.getMessage());
+    }
 }

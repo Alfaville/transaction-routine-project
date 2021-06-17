@@ -11,5 +11,4 @@ public class AccountRequest {
 
     @NotBlank(message = "Document number is required")
     private String documentNumber;
-
 }

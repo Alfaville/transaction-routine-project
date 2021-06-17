@@ -3,9 +3,12 @@ package io.pismo.transaction_routine.entrypoint.http;
 import io.pismo.transaction_routine.core.entity.AccountEntity;
 import io.pismo.transaction_routine.core.service.AccountFacade;
 import io.pismo.transaction_routine.entrypoint.http.converter.AccountEntityToAccountResponseConverter;
+import io.pismo.transaction_routine.entrypoint.http.converter.TransactionEntityToTransactionResponseConverter;
 import io.pismo.transaction_routine.entrypoint.http.openapi.AccountHttpOpenApi;
 import io.pismo.transaction_routine.entrypoint.http.request.AccountRequest;
+import io.pismo.transaction_routine.entrypoint.http.request.TransactionRequest;
 import io.pismo.transaction_routine.entrypoint.http.response.AccountResponse;
+import io.pismo.transaction_routine.entrypoint.http.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,7 @@ public class AccountHttp implements AccountHttpOpenApi {
 
     private final AccountFacade accountFacade;
     private final AccountEntityToAccountResponseConverter toAccountResponse;
+    private final TransactionEntityToTransactionResponseConverter toTransactionResponse;
 
     @Override
     @PostMapping
@@ -39,12 +43,22 @@ public class AccountHttp implements AccountHttpOpenApi {
     @GetMapping(value = "/{accountId}")
     public ResponseEntity<AccountResponse> getById(@PathVariable("accountId") Long accountId) {
         var account = accountFacade.findAccount(accountId);
-        if(account.isPresent()) {
+        if (account.isPresent()) {
             final AccountResponse response = toAccountResponse.convert(account.get());
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } else {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @Override
+    @PostMapping(value = "/{accountId}/transactions")
+    public ResponseEntity<TransactionResponse> createTransaction(
+            @PathVariable("accountId") Long accountId,
+            @RequestBody @Valid TransactionRequest transactionRequest
+    ) {
+        var transaction = accountFacade.createTransactionForAccount(accountId, transactionRequest);
+        return ResponseEntity.ok().body(toTransactionResponse.convert(transaction));
     }
 
 }

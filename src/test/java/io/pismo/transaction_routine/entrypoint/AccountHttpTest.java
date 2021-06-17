@@ -5,8 +5,11 @@ import io.pismo.transaction_routine.config.exception.EntityAlreadyExistExeceptio
 import io.pismo.transaction_routine.core.service.AccountFacade;
 import io.pismo.transaction_routine.entrypoint.http.AccountHttp;
 import io.pismo.transaction_routine.entrypoint.http.converter.AccountEntityToAccountResponseConverter;
+import io.pismo.transaction_routine.entrypoint.http.converter.TransactionEntityToTransactionResponseConverter;
 import io.pismo.transaction_routine.entrypoint.http.request.AccountRequest;
+import io.pismo.transaction_routine.entrypoint.http.request.TransactionRequest;
 import io.pismo.transaction_routine.mock.AccountFactory;
+import io.pismo.transaction_routine.mock.TransactionFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +50,8 @@ public class AccountHttpTest {
     private AccountFacade accountFacade;
     @SpyBean
     private AccountEntityToAccountResponseConverter toAccountResponse;
+    @SpyBean
+    private TransactionEntityToTransactionResponseConverter toTransactionResponse;
 
     static final String BASE_URL = "/v1/accounts";
 
@@ -170,6 +175,56 @@ public class AccountHttpTest {
         //THEN
         resultActions.andDo(print())
                 .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    @DisplayName("Try to create a non-existent transaction for an account and return success")
+    void try_create_a_non_existent_transaction_for_account_and_return_ok() throws Exception {
+        //GIVEN
+        var transaction = TransactionFactory.INSTANCE.getTransactionSaque();
+        var transactionRequest = TransactionFactory.INSTANCE.getTransactionSaqueRequest();
+
+        //WHEN
+        when(accountFacade.createTransactionForAccount(anyLong(), any(TransactionRequest.class)))
+                .thenReturn(transaction);
+
+        ResultActions resultActions = mockMvc.perform(
+                post(new URI(BASE_URL) + "/1/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .content(mapper.writeValueAsString(transactionRequest))
+        );
+
+        var newTransaction = accountFacade.createTransactionForAccount(1L, transactionRequest);
+
+        //THEN
+        resultActions.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.transaction_id").value(newTransaction.getId()))
+        ;
+    }
+
+    @Test
+    @DisplayName("Try to create a non-existent transaction for an account without amount value and return bad request")
+    void try_create_a_non_existent_transaction_for_account_without_amount_value_and_return_bad_request() throws Exception {
+        //GIVEN
+        var transaction = TransactionFactory.INSTANCE.getTransactionSaque();
+        var transactionRequest = TransactionFactory.INSTANCE.getTransactionSaqueRequest();
+        transactionRequest.setAmount(null);
+
+        //WHEN
+        ResultActions resultActions = mockMvc.perform(
+                post(new URI(BASE_URL) + "/1/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .content(mapper.writeValueAsString(transactionRequest))
+        );
+
+        //THEN
+        resultActions.andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("amount must not be null"))
         ;
     }
 }
