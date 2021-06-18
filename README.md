@@ -1,5 +1,7 @@
 # Pismo - Transaction Routine
 
+The local test API are in [Swagger].
+
 ### Stack technology
 
 * Java 11
@@ -29,3 +31,6 @@
 
 ### Deployment
 
+* Run the start.sh file and choose the environment (DEV, LOCAL or PROD).
+
+[Swagger]: <http://localhost:9000/transaction-routine/swagger-ui/index.html?configUrl=/transaction-routine/v3/api-docs/swagger-config>

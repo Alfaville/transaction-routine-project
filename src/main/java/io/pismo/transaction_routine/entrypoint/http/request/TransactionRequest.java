@@ -1,5 +1,6 @@
 package io.pismo.transaction_routine.entrypoint.http.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @Getter
 public class TransactionRequest {
     @NotNull
+    @JsonProperty("operation_type_id")
     private Long operationTypeId;
     @NotNull
     private BigDecimal amount;

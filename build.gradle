@@ -47,7 +47,11 @@ test {
 pmd {
 	toolVersion = "$pmdVersion"
 	consoleOutput = true
-	rulesMinimumPriority = 5
+//	rulesMinimumPriority = 5
 	ruleSetFiles = files("config/custom-pmd-style.xml")
 	ignoreFailures = true
+}
+
+bootBuildImage {
+	imageName = "io_pismo/transaction-routine"
 }
