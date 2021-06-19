@@ -20,7 +20,7 @@
 ### Installation
 
 * Java 11 minimum version;
-* Gradle 5 minimum version;
+* Gradle 6.5 minimum version;
 * Docker
 
 ### Plugins
