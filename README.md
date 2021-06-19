@@ -20,7 +20,7 @@
 ### Installation
 
 * Java 11 minimum version;
-* Gradle 4.5 minimum version;
+* Gradle 5 minimum version;
 * Docker
 
 ### Plugins
@@ -29,3 +29,8 @@
 
 ### Deployment
 
+* Run the start.sh file and choose the environment (DEV, LOCAL or PROD).
+* The local test API is in [Swagger] and see the results in [H2].
+
+[Swagger]: <http://localhost:9000/transaction-routine/swagger-ui/index.html?configUrl=/transaction-routine/v3/api-docs/swagger-config>
+[H2]: <http://localhost:9000/transaction-routine/h2-console/login.do>

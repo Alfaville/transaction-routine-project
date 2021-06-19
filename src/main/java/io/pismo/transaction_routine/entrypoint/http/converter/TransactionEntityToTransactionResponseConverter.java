@@ -1,7 +1,6 @@
 package io.pismo.transaction_routine.entrypoint.http.converter;
 
 import io.pismo.transaction_routine.core.entity.TransactionEntity;
-import io.pismo.transaction_routine.entrypoint.http.response.AccountResponse;
 import io.pismo.transaction_routine.entrypoint.http.response.TransactionResponse;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
