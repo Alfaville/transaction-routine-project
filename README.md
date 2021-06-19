@@ -29,7 +29,7 @@
 
 ### Deployment
 
-* Run the start.sh file and choose the environment (DEV, LOCAL or PROD).
+* Run the start.sh file and choose the environment (DEV or PROD).
 * The local test API is in [Swagger] and see the results in [H2].
 
 [Swagger]: <http://localhost:9000/transaction-routine/swagger-ui/index.html?configUrl=/transaction-routine/v3/api-docs/swagger-config>
