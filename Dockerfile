@@ -14,4 +14,4 @@ WORKDIR /app
 RUN mkdir /opt/app
 COPY --from=gradleimage ${JAR_FILE} /opt/app/transaction-routine.jar
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=local", "/opt/app/transaction-routine.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/app/transaction-routine.jar"]
