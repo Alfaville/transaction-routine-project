@@ -4,14 +4,14 @@ ENVIRONMENT=""
 
 deployment_dev()
 {
-  gradle clean
-  gradle build
-  gradle bootRun --args='--spring.profiles.active=dev'
+  ./gradlew clean
+  ./gradlew build
+  ./gradlew bootRun --args='--spring.profiles.active=dev'
 }
 
 deployment_prod()
 {
-  gradle bootBuildImage
+  ./gradlew bootBuildImage
   docker-compose down
   docker-compose pull
   docker-compose up -d
