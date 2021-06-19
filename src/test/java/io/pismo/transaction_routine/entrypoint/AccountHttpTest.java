@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.net.URI;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -43,15 +42,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountHttpTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    private transient MockMvc mockMvc;
     @Autowired
-    ObjectMapper mapper;
+    private transient ObjectMapper mapper;
     @MockBean
-    private AccountFacade accountFacade;
+    private transient AccountFacade accountFacade;
     @SpyBean
-    private AccountEntityToAccountResponseConverter toAccountResponse;
+    AccountEntityToAccountResponseConverter toAccountResponse;
     @SpyBean
-    private TransactionEntityToTransactionResponseConverter toTransactionResponse;
+    TransactionEntityToTransactionResponseConverter toTransactionResponse;
 
     static final String BASE_URL = "/v1/accounts";
 

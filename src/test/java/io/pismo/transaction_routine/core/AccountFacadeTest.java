@@ -38,13 +38,13 @@ import static org.mockito.Mockito.when;
 public class AccountFacadeTest {
 
     @SpyBean
-    AccountFacadeImpl accountFacade;
+    private transient AccountFacadeImpl accountFacade;
     @MockBean
-    AccountRepository accountRepository;
+    private transient AccountRepository accountRepository;
     @MockBean
-    OperationTypeRepository operationTypeRepository;
+    private transient OperationTypeRepository operationTypeRepository;
     @MockBean
-    TransactionRepository transactionRepository;
+    private transient TransactionRepository transactionRepository;
     @SpyBean
     AccountRequestToAccountEntityConverter accountRequestToAccountEntityConverter;
 

@@ -47,7 +47,6 @@ test {
 pmd {
 	toolVersion = "$pmdVersion"
 	consoleOutput = true
-//	rulesMinimumPriority = 5
 	ruleSetFiles = files("config/custom-pmd-style.xml")
 	ignoreFailures = true
 }

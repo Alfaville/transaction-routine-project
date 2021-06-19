@@ -1,6 +1,7 @@
 FROM gradle:jdk11 as gradleimage
 COPY . /home/gradle/source
 WORKDIR /home/gradle/source
+RUN gradle clean
 RUN gradle build
 
 FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.10_9_openj9-0.24.0-alpine
