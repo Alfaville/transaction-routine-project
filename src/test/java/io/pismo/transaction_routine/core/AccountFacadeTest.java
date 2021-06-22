@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.util.IllegalFormatConversionException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -148,7 +149,6 @@ public class AccountFacadeTest {
                 .thenReturn(Optional.of(account));
         when(operationTypeRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
-
 
         EntityNotFoundExeception entityNotFoundExeception = assertThrows(
                 EntityNotFoundExeception.class,

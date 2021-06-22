@@ -4,6 +4,8 @@ import io.pismo.transaction_routine.config.exception.EntityAlreadyExistExeceptio
 import io.pismo.transaction_routine.config.exception.EntityNotFoundExeception;
 import io.pismo.transaction_routine.core.converter.AccountRequestToAccountEntityConverter;
 import io.pismo.transaction_routine.core.entity.AccountEntity;
+import io.pismo.transaction_routine.core.entity.OperationTypeEntity;
+import io.pismo.transaction_routine.core.entity.OperationTypeEnum;
 import io.pismo.transaction_routine.core.entity.TransactionEntity;
 import io.pismo.transaction_routine.core.service.AccountFacade;
 import io.pismo.transaction_routine.dataprovider.repository.AccountRepository;
@@ -54,7 +56,7 @@ public class AccountFacadeImpl implements AccountFacade {
     @Transactional
     public TransactionEntity createTransactionForAccount(Long accountId, TransactionRequest transactionRequest) {
         var accountAsync = supplyAsync(() -> accountRepository.findById(accountId));
-        var operationTypeAsync = supplyAsync(() -> operationTypeRepository.findById(transactionRequest.getOperationTypeId()));
+        var operationTypeAsync = supplyAsync(() -> operationTypeRepository.findById(transactionRequest.getOperationTypeId().getIdentity()));
 
         allOf(accountAsync, operationTypeAsync).join();
 
@@ -65,10 +67,14 @@ public class AccountFacadeImpl implements AccountFacade {
 
         var operationType = operationTypeAsync.join();
         if (operationType.isEmpty()) {
-            throw new EntityNotFoundExeception(String.format("Operation type with ID %d doesn't exists", transactionRequest.getOperationTypeId()));
+            throw new EntityNotFoundExeception(String.format("Operation type with ID %d doesn't exists", transactionRequest.getOperationTypeId().getIdentity()));
         }
+        final OperationTypeEntity operationTypeEntity = operationType.get();
 
-        final BigDecimal amount = operationType.get().checkValueType(transactionRequest.getAmount());
+        final BigDecimal amount = transactionRequest.getOperationTypeId().checkValueType(transactionRequest.getAmount());
+
+        final AccountEntity updateAccount = account.get();
+        updateAvailableLimitCredit(updateAccount, amount);
 
         var transaction = TransactionEntity.builder()
                 .operationTypeEntity(operationType.get())
@@ -80,4 +86,10 @@ public class AccountFacadeImpl implements AccountFacade {
         log.info(String.format("Transaction with ID %d created successfully!", newTransaction.getId()));
         return newTransaction;
     }
+
+    private void updateAvailableLimitCredit(AccountEntity updateAccount, BigDecimal amount) {
+        updateAccount.setAvailableCreditLimit(updateAccount.getAvailableCreditLimit().add(amount));
+        accountRepository.save(updateAccount);
+    }
+
 }

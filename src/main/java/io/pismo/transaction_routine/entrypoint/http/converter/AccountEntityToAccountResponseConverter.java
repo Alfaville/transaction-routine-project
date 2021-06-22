@@ -12,7 +12,7 @@ public class AccountEntityToAccountResponseConverter implements Converter<Accoun
 
     @Override
     public AccountResponse convert(AccountEntity source) {
-        return new AccountResponse(source.getId().toString(), source.getDocumentNumber());
+        return new AccountResponse(source.getId().toString(), source.getDocumentNumber(), source.getAvailableCreditLimit());
     }
 
 }

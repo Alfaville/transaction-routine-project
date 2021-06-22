@@ -1,0 +1,1 @@
+ALTER TABLE ACCOUNT ADD COLUMN available_credit_limit decimal(19,2) default null;
