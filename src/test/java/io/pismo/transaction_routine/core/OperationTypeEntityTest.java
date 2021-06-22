@@ -1,6 +1,7 @@
 package io.pismo.transaction_routine.core;
 
 import io.pismo.transaction_routine.core.entity.OperationTypeEntity;
+import io.pismo.transaction_routine.core.entity.OperationTypeEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ public class OperationTypeEntityTest {
         var operationType = new OperationTypeEntity();
         operationType.setId(PAGAMENTO);
 
-        var amountValueReturned = operationType.checkValueType(new BigDecimal(-50));
+        var amountValueReturned = OperationTypeEnum.PAGAMENTO.checkValueType(new BigDecimal(-50));
         var amountValueExpected = new BigDecimal(50);
 
         assertEquals(amountValueExpected, amountValueReturned);
@@ -30,7 +31,7 @@ public class OperationTypeEntityTest {
         var operationType = new OperationTypeEntity();
         operationType.setId(PAGAMENTO);
 
-        var amountValueReturned = operationType.checkValueType(new BigDecimal(50));
+        var amountValueReturned = OperationTypeEnum.PAGAMENTO.checkValueType(new BigDecimal(50));
         var amountValueExpected = new BigDecimal(50);
 
         assertEquals(amountValueExpected, amountValueReturned);
@@ -43,7 +44,7 @@ public class OperationTypeEntityTest {
         var operationType = new OperationTypeEntity();
         operationType.setId(COMPRA_A_VISTA);
 
-        var amountValueReturned = operationType.checkValueType(new BigDecimal(-50));
+        var amountValueReturned = OperationTypeEnum.COMPRA_A_VISTA.checkValueType(new BigDecimal(-50));
         var amountValueExpected = new BigDecimal(-50);
 
         assertEquals(amountValueExpected, amountValueReturned);
@@ -56,7 +57,7 @@ public class OperationTypeEntityTest {
         var operationType = new OperationTypeEntity();
         operationType.setId(SAQUE);
 
-        var amountValueReturned = operationType.checkValueType(new BigDecimal(50));
+        var amountValueReturned = OperationTypeEnum.SAQUE.checkValueType(new BigDecimal(50));
         var amountValueExpected = new BigDecimal(-50);
 
         assertEquals(amountValueExpected, amountValueReturned);

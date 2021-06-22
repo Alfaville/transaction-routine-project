@@ -1,5 +1,6 @@
 package io.pismo.transaction_routine.dataprovider.repository;
 
+import io.pismo.transaction_routine.config.exception.AccountCreditLimitExeception;
 import io.pismo.transaction_routine.core.entity.AccountEntity;
 import io.pismo.transaction_routine.core.entity.OperationTypeEntity;
 import io.pismo.transaction_routine.core.entity.TransactionEntity;
@@ -99,6 +100,30 @@ public class DatabaseIntegrationTest {
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
             var account = new AccountEntity();
             account.setDocumentNumber("12345678900");
+            accountRepository.save(account);
+        });
+        assertNotNull(exception.getMessage());
+    }
+
+    @Test
+    @Order(7)
+    void tryToPersistAccountWithAvailableCreditLimitPositive() {
+        AccountEntity account = new AccountEntity();
+        account.setDocumentNumber("123456789099");
+        account.setAvailableCreditLimit(new BigDecimal("50.89"));
+
+        final AccountEntity newAccount = accountRepository.save(account);
+
+        assertNotNull(newAccount);
+    }
+
+    @Test
+    @Order(8)
+    void tryToPersistAccountWithAvailableCreditLimitNegative() {
+        AccountCreditLimitExeception exception = assertThrows(AccountCreditLimitExeception.class, () -> {
+            var account = new AccountEntity();
+            account.setDocumentNumber("123456789087");
+            account.setAvailableCreditLimit(new BigDecimal("-50"));
             accountRepository.save(account);
         });
         assertNotNull(exception.getMessage());

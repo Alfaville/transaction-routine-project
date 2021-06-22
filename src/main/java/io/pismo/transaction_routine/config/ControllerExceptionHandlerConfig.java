@@ -1,5 +1,6 @@
 package io.pismo.transaction_routine.config;
 
+import io.pismo.transaction_routine.config.exception.AccountCreditLimitExeception;
 import io.pismo.transaction_routine.config.exception.EntityAlreadyExistExeception;
 import io.pismo.transaction_routine.config.exception.EntityNotFoundExeception;
 import io.pismo.transaction_routine.entrypoint.http.response.ApiResponse;
@@ -23,7 +24,7 @@ class ControllerExceptionHandlerConfig extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
     }
 
-    @ExceptionHandler({EntityAlreadyExistExeception.class, EntityNotFoundExeception.class})
+    @ExceptionHandler({EntityAlreadyExistExeception.class, EntityNotFoundExeception.class, AccountCreditLimitExeception.class})
     public ResponseEntity<ApiResponse> businessException(Exception e, HttpServletRequest req) {
         final ApiResponse apiResponse = new ApiResponse(HttpStatus.PRECONDITION_FAILED, e.getMessage());
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(apiResponse);

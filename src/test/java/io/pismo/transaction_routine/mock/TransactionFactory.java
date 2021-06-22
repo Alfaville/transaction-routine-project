@@ -1,6 +1,7 @@
 package io.pismo.transaction_routine.mock;
 
 import io.pismo.transaction_routine.core.entity.OperationTypeEntity;
+import io.pismo.transaction_routine.core.entity.OperationTypeEnum;
 import io.pismo.transaction_routine.core.entity.TransactionEntity;
 import io.pismo.transaction_routine.entrypoint.http.request.TransactionRequest;
 
@@ -24,7 +25,7 @@ public enum TransactionFactory {
     public TransactionRequest getTransactionSaqueRequest() {
         var transaction = new TransactionRequest();
         transaction.setAmount(new BigDecimal("-50"));
-        transaction.setOperationTypeId(3L);
+        transaction.setOperationTypeId(OperationTypeEnum.SAQUE);
         return transaction;
     }
 
